@@ -4,20 +4,34 @@
 #   }
 # }
 
+# old_hash = {
+#   type: {
+#     language: {
+#       style: 'z'
+#     }
+#   }
+# }
+
+# style_arr = [
+#   :oo,
+#   { ruby:       { type: 'interpreted' },
+#     javascript: { type: 'interpreted' },
+#     python:     { type: 'interpreted' },
+#     java:       { type: 'compiled'    }
+#   }
+# ]
+
 def reformat_languages(languages)
-  new_hash = {}
+  languages.each_with_object({}) do |style_arr, new_hash|
+    style = style_arr.first
+    langs = style_arr.last
 
-  languages.each_pair do |style, langs|
     langs.each_pair do |language, specs|
-      type = specs[:type]
-
       if new_hash.include? language
         new_hash[language][:style] << style
       else
-        new_hash[language] = { type: type, style: [style] }
+        new_hash[language] = { type: specs[:type], style: [style] }
       end
     end
   end
-
-  new_hash
 end
